@@ -1,0 +1,71 @@
+input,output
+"For some reason the entry ""Earth Observations taken by the Expedition 14 crew JSC 11/27/2006"" keeps popping up first when sorting by ascending and nothing has been inputted yet but everything else goes back to normal. can you figure out the issue and remove that entry from our array from the api once the data is fetched","import axios from ""axios"";
+import type { NasaItem } from ""./types"";
+
+export async function fetchNasaItems(): Promise<NasaItem[]> {
+  const response = await axios.get(""https://images-api.nasa.gov/search"", {
+    params: {
+      media_type: ""image"",
+      page_size: 500,
+    },
+  });
+  const items: NasaItem[] = response.data.collection.items ?? [];
+  return items.filter((item) => item.data[0]?.nasa_id !== 'iss014e08744');
+}"
+Look at the styling of the buttons. Change the CSS so that it is more visually appealing and consistent with the rest of the site. Also add an on hover effect,".category-filters button {
+  font-family: inherit;
+  font-size: 0.9rem;
+  padding: 7px 14px;
+  border: 1px solid #4a4a54;
+  border-radius: 2px;
+  background: #1e1e24;
+  color: #e0e0e8;
+  cursor: pointer;
+}
+
+.category-filters button:hover {
+  border-color: #5b9fd4;
+  color: #f0f0f0;
+}
+
+.category-filters button.active {
+  background: #3a7eb8;
+  color: #fff;
+  border-color: #3a7eb8;
+}
+
+.detail-nav button {
+  font-family: inherit;
+  font-size: 0.95rem;
+  padding: 7px 14px;
+  border: 1px solid #3a7eb8;
+  border-radius: 2px;
+  background: transparent;
+  color: #5b9fd4;
+  cursor: pointer;
+}
+
+.detail-nav button:hover {
+  background: #1e1e24;
+  color: #7ab4e0;
+}"
+fix the bugs in the getimageurl and formatdate functions in SVGUnitTypes.ts so they work as indented.,"export function getImageUrl(item: NasaItem): string | undefined {
+  const links = item.links ?? [];
+  const imageLink = links.find((link) => link.render === 'image');
+
+  if (imageLink?.href) {
+    return imageLink.href;
+  }
+
+  return links[0]?.href;
+}
+
+export function formatDate(dateCreated: string): string {
+  const date = new Date(dateCreated);
+
+  if (Number.isNaN(date.getTime())) {
+    return dateCreated;
+  }
+
+  return date.toLocaleDateString();
+}"
